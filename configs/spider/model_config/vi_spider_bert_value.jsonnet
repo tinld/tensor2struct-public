@@ -1,9 +1,9 @@
-local _data_path = 'data/vi-spider/';
+local _data_path = '/content/tensor2struct-public/data/vi-spider/';
 local spider_base = import "spider_base_0512.libsonnet";
 
 function(args, data_path=_data_path) spider_base(args, data_path=_data_path) {
     data: {
-        local PREFIX = data_path + "data/word-level/",
+        local PREFIX = data_path + "/content/tensor2struct-public/data/vi-spider/data/word-level/",
 
         train: {
             name: 'spider', 
