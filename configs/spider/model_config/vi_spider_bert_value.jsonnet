@@ -3,7 +3,7 @@ local spider_base = import "spider_base_0512.libsonnet";
 
 function(args, data_path=_data_path) spider_base(args, data_path=_data_path) {
     data: {
-        local PREFIX = data_path + "raw/word-level/",
+        local PREFIX = data_path + "data/word-level/",
 
         train: {
             name: 'spider', 
