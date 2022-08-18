@@ -3,7 +3,7 @@ local spider_base = import "spider_base_0512.libsonnet";
 
 function(args, data_path=_data_path) spider_base(args, data_path=_data_path) {
     data: {
-        local PREFIX = data_path + "/content/tensor2struct-public/data/vi-spider/data/word-level/",
+        local PREFIX = data_path + "data/word-level/",
 
         train: {
             name: 'spider', 
@@ -12,19 +12,19 @@ function(args, data_path=_data_path) spider_base(args, data_path=_data_path) {
             tables_paths: [
               PREFIX + 'tables.json',
             ],
-            db_path: PREFIX + 'database',
+            db_path: PREFIX,
         },
         val: {
             name: 'spider', 
             paths: [PREFIX + 'dev.json'],
             tables_paths: [PREFIX + 'tables.json'],
-            db_path: PREFIX + 'database',
+            db_path: PREFIX,
         },
         test: {
             name: 'spider',
             paths: [PREFIX + 'test.json'],
             tables_paths: [PREFIX + 'tables.json'],
-            db_path: PREFIX + 'database',
+            db_path: PREFIX,
         }
 
     },
@@ -47,7 +47,7 @@ function(args, data_path=_data_path) spider_base(args, data_path=_data_path) {
             context: {
                 "name": "spider-bert",
                 db_paths: [
-                    _data_path + "raw/database"
+                    _data_path + "data/word-level"
                 ],
             },
             bert_version: $.model.encoder.bert_version,
