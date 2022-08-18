@@ -22,7 +22,7 @@ _STOP_WORDS = {"", "", "all", "being", "-", "over", "through", "yourselves", "it
               "again", "'ll", "no", "that", "when", "same", "how", "other", "which", "you", "many", "shan",
               "'t", "'s", "our", "after", "most", "'d", "such", "'m", "why", "a", "off", "i", "yours", "so",
               "the", "having", "once"}
-STOP_WORDS = set(nltk.corpus.stopwords.words("english")).union(_STOP_WORDS)
+STOP_WORDS = nltk.download("stopwords")
 PUNKS = set(a for a in string.punctuation)
 # fmt: on
 
