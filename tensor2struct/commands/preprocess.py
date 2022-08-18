@@ -6,8 +6,6 @@ import _jsonnet
 import tqdm
 
 from tensor2struct.utils import registry
-import nltk
-nltk.download('stopwords')
 
 class Preprocessor:
     def __init__(self, config):
