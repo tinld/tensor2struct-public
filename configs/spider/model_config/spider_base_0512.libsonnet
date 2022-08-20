@@ -1,6 +1,6 @@
 # args of the function will have a default value
 # so that we could balance flexibility and inherintance
-local _data_path = 'data/spider/';
+local _data_path = '/content/tensor2struct-public/data/vi-spider/';
 
 function(args={}, data_path=_data_path) {
     
@@ -74,13 +74,13 @@ function(args={}, data_path=_data_path) {
             tables_paths: [
               PREFIX + 'tables.json',
             ],
-            db_path: PREFIX + 'database',
+            db_path: PREFIX,
         },
         val: {
             name: 'spider', 
             paths: [PREFIX + 'dev.json'],
             tables_paths: [PREFIX + 'tables.json'],
-            db_path: PREFIX + 'database',
+            db_path: PREFIX,
         },
     },
 
@@ -129,7 +129,7 @@ function(args={}, data_path=_data_path) {
             max_count: 5000,
             context: {
                 name: "spider",
-                db_path: _data_path + "raw/database",
+                db_path: _data_path + "data/word-level",
             },
             compute_sc_link: $.args.sc_link,
             compute_cv_link: $.args.cv_link,
