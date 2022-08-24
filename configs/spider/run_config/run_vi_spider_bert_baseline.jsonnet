@@ -24,7 +24,7 @@
         include_literals: true,
 
         # training
-        bs: 12,
+        bs: 16,
         att: 0,
         lr: 5e-4,
         clip_grad: 0.3,
