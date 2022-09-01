@@ -47,7 +47,7 @@ function(args, data_path=_data_path) spider_base(args, data_path=_data_path) {
             context: {
                 "name": "spider-bert",
                 db_paths: [
-                    _data_path + "data/word-level/database"
+                    _data_path + "data/spider/database"
                 ],
             },
             bert_version: $.model.encoder.bert_version,
