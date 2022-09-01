@@ -12,19 +12,19 @@ function(args, data_path=_data_path) spider_base(args, data_path=_data_path) {
             tables_paths: [
               PREFIX + 'tables.json',
             ],
-            db_path: PREFIX,
+            db_path: PREFIX + 'database',
         },
         val: {
             name: 'spider', 
             paths: [PREFIX + 'dev.json'],
             tables_paths: [PREFIX + 'tables.json'],
-            db_path: PREFIX,
+            db_path: PREFIX + 'database',
         },
         test: {
             name: 'spider',
             paths: [PREFIX + 'test.json'],
             tables_paths: [PREFIX + 'tables.json'],
-            db_path: PREFIX,
+            db_path: PREFIX + 'database',
         }
 
     },
@@ -47,7 +47,7 @@ function(args, data_path=_data_path) spider_base(args, data_path=_data_path) {
             context: {
                 "name": "spider-bert",
                 db_paths: [
-                    _data_path + "data/word-level"
+                    _data_path + "data/word-level/database"
                 ],
             },
             bert_version: $.model.encoder.bert_version,
