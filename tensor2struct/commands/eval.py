@@ -1,84 +1,205 @@
 import argparse
-import os
+import ast
+import attr
+import itertools
 import json
+import os
+import sys
+
 import _jsonnet
-import wandb
+import asdl
+import astor
+import torch
+import tqdm
 
 from tensor2struct.utils import registry
+from tensor2struct.utils import saver as saver_mod
+
+class CheckpointNotFoundError(Exception):
+    pass
+
+
+class Inferer:
+    def __init__(self, config):
+        self.config = config
+        if torch.cuda.is_available():
+            self.device = torch.device("cuda:0")
+        else:
+            self.device = torch.device("cpu")
+            torch.set_num_threads(1)
+
+        # 0. Construct preprocessors
+        self.model_preproc = registry.instantiate(
+            registry.lookup("model", config["model"]).Preproc,
+            config["model"],
+            unused_keys=("name",),
+        )
+        self.model_preproc.load()
+
+    def load_model(self, logdir, step):
+        """Load a model (identified by the config used for construction) and return it"""
+        # 1. Construct model
+        model = registry.construct(
+            "model",
+            self.config["model"],
+            preproc=self.model_preproc,
+            device=self.device,
+            unused_keys=("decoder_preproc", "encoder_preproc"),
+        )
+        model.to(self.device)
+        model.eval()
+        model.visualize_flag = False
+
+        # 2. Restore its parameters
+        saver = saver_mod.Saver({"model": model})
+        last_step = saver.restore(
+            logdir, step=step, map_location=self.device, item_keys=["model"]
+        )
+        if last_step == 0:  # which is fine fro pretrained model
+            # print("Warning: infer on untrained model")
+            raise CheckpointNotFoundError(f"Attempting to infer on untrained model, logdir {logdir}, step {step}")
+        return model
+
+    def infer(self, model, output_path, args):
+        output = open(output_path, "w", encoding='utf8')
+
+        infer_func = registry.lookup("infer_method", args.method)
+        with torch.no_grad():
+            if args.mode == "infer":
+                orig_data = registry.construct(
+                    "dataset", self.config["data"][args.section]
+                )
+                preproc_data = self.model_preproc.dataset(args.section)
+                if args.limit:
+                    sliced_orig_data = itertools.islice(orig_data, args.limit)
+                    sliced_preproc_data = itertools.islice(preproc_data, args.limit)
+                else:
+                    sliced_orig_data = orig_data
+                    sliced_preproc_data = preproc_data
+                assert len(orig_data) == len(preproc_data)
+                self._inner_infer(
+                    model,
+                    infer_func,
+                    args.beam_size,
+                    sliced_orig_data,
+                    sliced_preproc_data,
+                    output,
+                    args.debug,
+                )
+
+    def _inner_infer(
+        self,
+        model,
+        infer_func,
+        beam_size,
+        sliced_orig_data,
+        sliced_preproc_data,
+        output,
+        debug=False,
+    ):
+        for i, (orig_item, preproc_item) in enumerate(
+            tqdm.tqdm(
+                zip(sliced_orig_data, sliced_preproc_data), total=len(sliced_orig_data)
+            )
+        ):
+            beams = infer_func(
+                model, orig_item, preproc_item, beam_size=beam_size, max_steps=1000
+            )
+
+            decoded = []
+            for beam in beams:
+                model_output, inferred_code = beam.inference_state.finalize()
+                if inferred_code is None:
+                    continue
+
+                decoded.append(
+                    {
+                        # "orig_question": orig_item["question"],
+                        "model_output": model_output,
+                        "inferred_code": inferred_code,
+                        "score": beam.score,
+                        **(
+                            {
+                                "choice_history": beam.choice_history,
+                                "score_history": beam.score_history,
+                            }
+                            if debug
+                            else {}
+                        ),
+                    }
+                )
+
+            if debug:
+                output.write(
+                    json.dumps(
+                        {
+                            "index": i,
+                            "beams": decoded,
+                            "orig_item": attr.asdict(orig_item),
+                            "preproc_item": preproc_item[0],
+                        },
+                        ensure_ascii=False
+                    ).encode("utf8")
+                    + "\n"
+                )
+            else:
+                output.write(
+                    json.dumps(
+                        {
+                            "index": i,
+                            "beams": decoded
+                        },
+                        ensure_ascii=False
+                    ))
+                output.write("\n")
+            output.flush()
 
 
 def add_parser():
     parser = argparse.ArgumentParser()
+    parser.add_argument("--logdir", required=True)
     parser.add_argument("--config", required=True)
     parser.add_argument("--config-args")
+
+    parser.add_argument("--step", type=int)
     parser.add_argument("--section", required=True)
-    parser.add_argument("--inferred", required=True)
-    parser.add_argument("--etype", default="match", help="match, exec, all")
-    parser.add_argument("--output")
-    parser.add_argument("--logdir")
+    parser.add_argument("--output", required=True)
+    parser.add_argument("--beam-size", required=True, type=int)
+    parser.add_argument("--limit", type=int)
+    parser.add_argument("--mode", default="infer", choices=["infer"])
+
+    parser.add_argument("--method", default="beam_search")
+    parser.add_argument("--debug", action="store_true")
     args = parser.parse_args()
     return args
 
 
-def compute_metrics(config_path, config_args, section, inferred_path, etype, logdir=None):
-    if config_args:
+def setup(args):
+    if args.config_args:
         config = json.loads(
-            _jsonnet.evaluate_file(config_path, tla_codes={"args": config_args})
+            _jsonnet.evaluate_file(args.config, tla_codes={"args": args.config_args})
         )
     else:
-        config = json.loads(_jsonnet.evaluate_file(config_path))
+        config = json.loads(_jsonnet.evaluate_file(args.config))
 
-    # update config to wandb
-    wandb.config.update(config)
+    if "model_name" in config:
+        args.logdir = os.path.join(args.logdir, config["model_name"])
 
-    if "model_name" in config and logdir:
-        logdir = os.path.join(logdir, config["model_name"])
-    if logdir:
-        inferred_path = inferred_path.replace("__LOGDIR__", logdir)
-
-    inferred = open(inferred_path)
-    data = registry.construct("dataset", config["data"][section])
-    metrics = data.Metrics(data, etype)
-
-    inferred_lines = list(inferred)
-    if len(inferred_lines) < len(data):
-        raise Exception(
-            "Not enough inferred: {} vs {}".format(len(inferred_lines), len(data))
-        )
-
-    for i, line in enumerate(inferred_lines):
-        infer_results = json.loads(line)
-        if infer_results["beams"]:
-            inferred_codes = [beam["inferred_code"] for beam in infer_results["beams"]]
-        else:
-            inferred_codes = [None]
-        assert "index" in infer_results
-
-        if etype in ["execution", "all"]:
-            # if eval by execution, then we choose the first executable one from the beams
-            metrics.add_beams(data[infer_results["index"]], inferred_codes, data[i].orig["question"])
-        else:
-            assert etype in ["match", "sacreBLEU", "tokenizedBLEU"]
-            metrics.add_one(data[infer_results["index"]], inferred_codes[0])
-    return logdir, metrics.finalize()
+    output_path = args.output.replace("__LOGDIR__", args.logdir)
+    dir_name = os.path.dirname(output_path)
+    if not os.path.exists(dir_name):
+        os.makedirs(dir_name)
+    if os.path.exists(output_path):
+        print("WARNING Output file {} already exists".format(output_path))
+        # sys.exit(1)
+    return config, output_path
 
 
 def main(args):
-    real_logdir, metrics = compute_metrics(
-        args.config, args.config_args, args.section, args.inferred, args.etype, args.logdir
-    )
-
-    if args.output:
-        if real_logdir:
-            output_path = args.output.replace("__LOGDIR__", real_logdir)
-        else:
-            output_path = args.output
-        with open(output_path, "w") as f:
-            json.dump(metrics, f)
-        print("Wrote eval results to {}".format(output_path))
-    else:
-        print(metrics)
-    return metrics
+    config, output_path = setup(args)
+    inferer = Inferer(config)
+    model = inferer.load_model(args.logdir, args.step)
+    inferer.infer(model, output_path, args)
 
 
 if __name__ == "__main__":
