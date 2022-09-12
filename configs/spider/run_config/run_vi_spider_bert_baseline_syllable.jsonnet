@@ -2,7 +2,7 @@
     local exp_id = 1,
     project: "spider_value",
     logdir: "log/spider/bert_value_%d" %exp_id,
-    model_config: "configs/spider/model_config/syllable/vi_spider_bert_value_syllable.jsonnet",
+    model_config: "configs/spider/model_config/vi_spider_bert_value_syllable.jsonnet",
     model_config_args: {
         # data 
         use_other_train: true,
