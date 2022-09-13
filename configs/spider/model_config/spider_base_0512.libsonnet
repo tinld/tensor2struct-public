@@ -1,6 +1,6 @@
 # args of the function will have a default value
 # so that we could balance flexibility and inherintance
-local _data_path = '/tensor2struct-public/data/vi-spider/';
+local _data_path = 'data/vi-spider/';
 
 function(args={}, data_path=_data_path) {
     
@@ -65,7 +65,7 @@ function(args={}, data_path=_data_path) {
     }),
 
     data: {
-        local PREFIX = data_path + "data/word-level",
+        local PREFIX = data_path + "data/",
         train: {
             name: 'spider', 
             paths: [
@@ -129,7 +129,7 @@ function(args={}, data_path=_data_path) {
             max_count: 5000,
             context: {
                 name: "spider",
-                db_path: _data_path + "data/word-level",
+                db_path: _data_path + "data/spider/database",
             },
             compute_sc_link: $.args.sc_link,
             compute_cv_link: $.args.cv_link,
