@@ -41,7 +41,7 @@
     eval_output: "ie_dir/spider_value",
     eval_beam_size: 3,
     eval_debug: false,
-    eval_name: "bert_run_%d_%s_%s_%d_%d" % [exp_id, self.eval_section, self.eval_method, self.eval_beam_size, self.model_config_args.att],
+    eval_name: "bert_run_%d_%s_%s_%d_%d_test" % [exp_id, self.eval_section, self.eval_method, self.eval_beam_size, self.model_config_args.att],
 
     local _start_step = $.model_config_args.save_threshold / 1000,
     local _end_step = $.model_config_args.max_steps / 1000,
