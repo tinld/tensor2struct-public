@@ -2,7 +2,7 @@
     local exp_id = 0,
     project: "spider_value",
     logdir: "log/spider/bert_value_%d" %exp_id,
-    model_config: "configs/spider/model_config/vi_spider_bert_value.jsonnet",
+    model_config: "configs/spider/model_config/run_vi_spider_bert_word_level_test.jsonnet",
     model_config_args: {
         # data 
         use_other_train: true,
