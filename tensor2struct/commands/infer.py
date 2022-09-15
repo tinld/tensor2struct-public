@@ -77,7 +77,7 @@ class Inferer:
                     sliced_orig_data = orig_data
                     sliced_preproc_data = preproc_data
                     print(f"{len(orig_data)} , {len(preproc_data)}")
-                assert len(orig_data) == len(preproc_data)
+                assert len(orig_data) != len(preproc_data)
                 self._inner_infer(
                     model,
                     infer_func,
