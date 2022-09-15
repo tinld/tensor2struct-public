@@ -49,7 +49,7 @@ class SpiderEncoderBertPreproc(abstract_preproc.AbstractPreproc):
         self,
         save_path,
         context,
-        bert_version="bert-base-uncased",
+        bert_version="vinai/phobert-large",
         compute_sc_link=True,
         compute_cv_link=True,
     ):
