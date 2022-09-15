@@ -73,10 +73,10 @@ class Inferer:
                 if args.limit:
                     sliced_orig_data = itertools.islice(orig_data, args.limit)
                     sliced_preproc_data = itertools.islice(preproc_data, args.limit)
+                    print(f"{sliced_preproc_data} , {sliced_orig_data}")
                 else:
                     sliced_orig_data = orig_data
                     sliced_preproc_data = preproc_data
-                    print(f"{len(orig_data)} , {len(preproc_data)}")
                 assert len(orig_data) == len(preproc_data)
                 self._inner_infer(
                     model,
