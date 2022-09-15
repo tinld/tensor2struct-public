@@ -61,7 +61,7 @@ class Inferer:
         return model
 
     def infer(self, model, output_path, args):
-        output = open(output_path, "w")
+        output = open(output_path, "w", encoding='utf8')
 
         infer_func = registry.lookup("infer_method", args.method)
         with torch.no_grad():
@@ -76,8 +76,8 @@ class Inferer:
                 else:
                     sliced_orig_data = orig_data
                     sliced_preproc_data = preproc_data
-                    print(f"{len(orig_data)} , {len(preproc_data)}")
-                assert len(orig_data) != len(preproc_data)
+                    print(f"{orig_data} , {preproc_data}")
+                assert len(orig_data) == len(preproc_data)
                 self._inner_infer(
                     model,
                     infer_func,
@@ -138,12 +138,21 @@ class Inferer:
                             "beams": decoded,
                             "orig_item": attr.asdict(orig_item),
                             "preproc_item": preproc_item[0],
-                        }
-                    )
+                        },
+                        ensure_ascii=False
+                    ).encode("utf8")
                     + "\n"
                 )
             else:
-                output.write(json.dumps({"index": i, "beams": decoded}) + "\n")
+                output.write(
+                    json.dumps(
+                        {
+                            "index": i,
+                            "beams": decoded
+                        },
+                        ensure_ascii=False
+                    ))
+                output.write("\n")
             output.flush()
 
 
@@ -180,7 +189,7 @@ def setup(args):
     output_path = args.output.replace("__LOGDIR__", args.logdir)
     dir_name = os.path.dirname(output_path)
     if not os.path.exists(dir_name):
-        os.mkdir(dir_name)
+        os.makedirs(dir_name)
     if os.path.exists(output_path):
         print("WARNING Output file {} already exists".format(output_path))
         # sys.exit(1)
