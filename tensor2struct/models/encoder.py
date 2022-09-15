@@ -58,11 +58,10 @@ class EncPreproc(abstract_preproc.AbstractPreproc):
         self.texts = collections.defaultdict(list)
 
     def save(self):
-        os.makedirs(self.data_dir, exist_ok=True)
+        os.mkdir(self.data_dir, exist_ok=True)
         self.vocab = self.vocab_builder.finish()
         print(f"{len(self.vocab)} words in enc vocab")
         self.vocab.save(self.vocab_path)
-
         for section, texts in self.texts.items():
             with open(os.path.join(self.data_dir, section + ".jsonl"), "w") as f:
                 for text in texts:
