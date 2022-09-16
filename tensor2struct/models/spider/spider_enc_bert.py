@@ -159,7 +159,7 @@ class SpiderEncoderBertPreproc(abstract_preproc.AbstractPreproc):
         ).get_default_relations()
         self.relations = sorted(self.relations.union(default_relations))
         print(f"{len(self.relations)} relations extracted")
-        print(f"{len(self)}")
+        print(f"{len(self.texts)}")
         with open(os.path.join(self.data_dir, "relations.json"), "w") as f:
             json.dump(self.relations, f)
 
