@@ -159,7 +159,6 @@ class SpiderEncoderBertPreproc(abstract_preproc.AbstractPreproc):
         ).get_default_relations()
         self.relations = sorted(self.relations.union(default_relations))
         print(f"{len(self.relations)} relations extracted")
-        print(f"{len(self.texts)}")
         with open(os.path.join(self.data_dir, "relations.json"), "w") as f:
             json.dump(self.relations, f)
 
@@ -169,6 +168,7 @@ class SpiderEncoderBertPreproc(abstract_preproc.AbstractPreproc):
                     f.write(
                         json.dumps(text, ensure_ascii=False))
                     f.write("\n")
+                    
 
     def load(self):
         # self.tokenizer = BertTokenizer.from_pretrained(self.data_dir)
@@ -182,6 +182,7 @@ class SpiderEncoderBertPreproc(abstract_preproc.AbstractPreproc):
         if len(self.texts[section]) > 0:
             return self.texts[section]
         else:
+            print("{line}")
             return [
                 json.loads(line)
                 for line in open(os.path.join(self.data_dir, section + ".jsonl"))
