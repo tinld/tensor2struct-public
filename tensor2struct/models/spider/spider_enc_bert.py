@@ -169,7 +169,6 @@ class SpiderEncoderBertPreproc(abstract_preproc.AbstractPreproc):
                         json.dumps(text, ensure_ascii=False))
                     f.write("\n")
                     
-
     def load(self):
         # self.tokenizer = BertTokenizer.from_pretrained(self.data_dir)
         with open(os.path.join(self.data_dir, "relations.json"), "r") as f:
@@ -182,7 +181,6 @@ class SpiderEncoderBertPreproc(abstract_preproc.AbstractPreproc):
         if len(self.texts[section]) > 0:
             return self.texts[section]
         else:
-            print("{line}")
             return [
                 json.loads(line)
                 for line in open(os.path.join(self.data_dir, section + ".jsonl"))
