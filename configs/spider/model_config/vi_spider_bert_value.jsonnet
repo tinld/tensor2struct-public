@@ -40,7 +40,7 @@ function(args, data_path=_data_path) spider_base(args, data_path=_data_path) {
                 name: "rat",
                 num_heads: 8,
                 num_layers: $.args.num_layers,
-                enable_latent_relations: true,
+                enable_latent_relations: false,
             },
         },
         encoder_preproc: {
