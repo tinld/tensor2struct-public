@@ -82,9 +82,9 @@ class SpiderEncoderBertPreproc(abstract_preproc.AbstractPreproc):
             + sum(len(c.name) for c in item.schema.columns)
             + sum(len(t.name) for t in item.schema.tables)
         )
-        if "phobert" in self.tokenizer_config and num_words > 512:
-            logger.info(f"Found long seq in {item.schema.db_id}")
-            return False, None
+        # if "phobert" in self.tokenizer_config and num_words > 512:
+        #     logger.info(f"Found long seq in {item.schema.db_id}")
+        #     return False, None
             # return True, True
         if num_words > 512:
             logger.info(f"Found long seq in {item.schema.db_id}")
