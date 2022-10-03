@@ -3,7 +3,7 @@ local spider_base = import "spider_base_0512.libsonnet";
 
 function(args, data_path=_data_path) spider_base(args, data_path=_data_path) {
     data: {
-        local PREFIX = data_path + "data/syllable-level/",
+        local PREFIX = data_path + "data/",
 
         train: {
             name: 'spider', 
@@ -47,13 +47,13 @@ function(args, data_path=_data_path) spider_base(args, data_path=_data_path) {
             context: {
                 "name": "spider-bert",
                 db_paths: [
-                    _data_path + "data/spider/database"
+                    _data_path + "database"
                 ],
             },
             bert_version: $.model.encoder.bert_version,
             compute_sc_link: $.args.sc_link,
             compute_cv_link: $.args.cv_link,
-            save_path: _data_path + 'spider-0728-%s,other_train-%s,sc_link=%s,cv_link=%s' % [self.bert_version, $.args.use_other_train, $.args.sc_link, $.args.cv_link],
+            save_path: _data_path + 'spider-0729-%s,other_train-%s,sc_link=%s,cv_link=%s' % [self.bert_version, $.args.use_other_train, $.args.sc_link, $.args.cv_link],
         },
 
         decoder+: {
