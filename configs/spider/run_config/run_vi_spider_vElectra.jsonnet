@@ -1,5 +1,5 @@
 {
-    local exp_id = 0,
+    local exp_id = 2,
     project: "spider_value",
     logdir: "log/spider/bert_value_%d" %exp_id,
     model_config: "configs/spider/model_config/vi_spider_vElectra.jsonnet",
