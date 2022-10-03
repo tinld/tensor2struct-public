@@ -53,7 +53,7 @@ function(args, data_path=_data_path) spider_base(args, data_path=_data_path) {
             bert_version: $.model.encoder.bert_version,
             compute_sc_link: $.args.sc_link,
             compute_cv_link: $.args.cv_link,
-            save_path: _data_path + 'spider-0729-%s,other_train-%s,sc_link=%s,cv_link=%s' % [self.bert_version, $.args.use_other_train, $.args.sc_link, $.args.cv_link],
+            save_path: _data_path + 'spider-0727-%s,other_train-%s,sc_link=%s,cv_link=%s' % [self.bert_version, $.args.use_other_train, $.args.sc_link, $.args.cv_link],
         },
 
         decoder+: {
