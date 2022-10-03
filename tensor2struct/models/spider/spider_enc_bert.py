@@ -14,7 +14,7 @@ from tensor2struct.models import abstract_preproc
 from tensor2struct.utils import serialization, vocab, registry
 from tensor2struct.modules import rat, lstm, embedders, bert_tokenizer
 
-from transformers import BertModel, ElectraModel, AutoModel
+from transformers import BertModel, ElectraModel, AutoModel, BertTokenizer
 
 import logging
 
@@ -82,10 +82,10 @@ class SpiderEncoderBertPreproc(abstract_preproc.AbstractPreproc):
             + sum(len(c.name) for c in item.schema.columns)
             + sum(len(t.name) for t in item.schema.tables)
         )
-        if "phobert" in self.tokenizer_config and num_words > 256:
+        if "phobert" in self.tokenizer_config and num_words > 512:
             logger.info(f"Found long seq in {item.schema.db_id}")
-            # return False, None
-            return True, True
+            return False, None
+            # return True, True
         if num_words > 512:
             logger.info(f"Found long seq in {item.schema.db_id}")
             return False, None
