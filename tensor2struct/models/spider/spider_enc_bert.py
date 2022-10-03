@@ -279,11 +279,11 @@ class SpiderEncoderBert(torch.nn.Module):
                 qs + [c for col in cols for c in col] + [t for tab in tabs for t in tab]
             )
             assert self.tokenizer.check_bert_input_seq(token_list)
-            if "phobert" in self.bert_version and len(token_list) > 256:
-                long_seq_set.add(batch_idx)
-                continue
+            # if "phobert" in self.bert_version and len(token_list) > 256:
+            #     long_seq_set.add(batch_idx)
+            #     continue
 
-            elif len(token_list) > 512:
+            if len(token_list) > 512:
                 long_seq_set.add(batch_idx)
                 continue
 
