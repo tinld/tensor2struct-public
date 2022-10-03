@@ -87,7 +87,7 @@ class Encoder(torch.nn.Module):
         device,
         preproc,
         dropout=0.1,
-        word_emb_size=128,
+        word_emb_size=512,
         recurrent_size=256,
         encoder=("emb", "bilstm"),
     ):
