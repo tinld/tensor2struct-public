@@ -50,7 +50,7 @@ class SpiderEncoderBertPreproc(abstract_preproc.AbstractPreproc):
         self,
         save_path,
         context,
-        bert_version="bert-base-uncased",
+        bert_version="FPTAI/velectra-base-discriminator-cased",
         compute_sc_link=True,
         compute_cv_link=True,
     ):
@@ -213,8 +213,7 @@ class SpiderEncoderBert(torch.nn.Module):
         self.bert_version = bert_version
         self.bert_token_type = bert_token_type
         self.base_enc_hidden_size = (
-            # 1024 if "large" in bert_version else 768
-            1024
+            1024 if "large" in bert_version else 768
         )
         self.include_in_memory = include_in_memory
 
