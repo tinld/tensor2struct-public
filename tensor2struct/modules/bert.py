@@ -1,6 +1,6 @@
 import pdb
 import torch
-from transformers import BertModel
+from transformers import BertModel, AutoModel, AutoTokenizer
 
 from tensor2struct.modules import bert_tokenizer
 from tensor2struct.utils import batched_sequence
