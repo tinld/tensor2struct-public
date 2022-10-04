@@ -14,7 +14,7 @@ from tensor2struct.models import abstract_preproc
 from tensor2struct.utils import serialization, vocab, registry
 from tensor2struct.modules import rat, lstm, embedders, bert_tokenizer
 
-from transformers import BertModel, ElectraModel, AutoModel, BertTokenizer
+from transformers import BertModel, ElectraModel, AutoModel
 
 import logging
 
@@ -82,13 +82,13 @@ class SpiderEncoderBertPreproc(abstract_preproc.AbstractPreproc):
             + sum(len(c.name) for c in item.schema.columns)
             + sum(len(t.name) for t in item.schema.tables)
         )
-        if "electra" in self.tokenizer_config and num_words > 512:
-            logger.info(f"Found long seq in {item.schema.db_id}")
-            return False, None
-            # return True, True
-        if "phobert" in self.tokenizer_config and num_words > 256:
-            logger.info(f"Found long seq in {item.schema.db_id}")
-            return False, None
+        # if "electra" in self.tokenizer_config and num_words > 512:
+        #     logger.info(f"Found long seq in {item.schema.db_id}")
+        #     return False, None
+        #     # return True, True
+        # if "phobert" in self.tokenizer_config and num_words > 256:
+        #     logger.info(f"Found long seq in {item.schema.db_id}")
+        #     return False, None
         if num_words > 512:
             logger.info(f"Found long seq in {item.schema.db_id}")
             return False, None
@@ -282,9 +282,9 @@ class SpiderEncoderBert(torch.nn.Module):
                 qs + [c for col in cols for c in col] + [t for tab in tabs for t in tab]
             )
             assert self.tokenizer.check_bert_input_seq(token_list)
-            if "electra" in self.bert_version and len(token_list) > 512:
-                long_seq_set.add(batch_idx)
-                continue
+            # if "electra" in self.bert_version and len(token_list) > 512:
+            #     long_seq_set.add(batch_idx)
+            #     continue
 
             if len(token_list) > 512:
                 long_seq_set.add(batch_idx)
