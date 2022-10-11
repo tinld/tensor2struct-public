@@ -288,6 +288,7 @@ class SpiderEncoderBert(torch.nn.Module):
 
             if len(token_list) > 512:
                 long_seq_set.add(batch_idx)
+                print(long_seq_set + " ")
                 continue
 
             q_b = len(qs)
@@ -352,6 +353,7 @@ class SpiderEncoderBert(torch.nn.Module):
                 )[0]
 
             enc_output = bert_output
+            
 
         column_pointer_maps = [
             {i: [i] for i in range(len(desc["columns"]))} for desc in descs
