@@ -9,7 +9,7 @@
 
         # model
         num_layers: 6,
-        sc_link: false,
+        sc_link: true,
         cv_link: false,
         loss_type: "softmax", # softmax, label_smooth
 
