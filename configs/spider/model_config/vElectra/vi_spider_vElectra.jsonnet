@@ -61,7 +61,6 @@ function(args, data_path=_data_path) spider_base(args, data_path=_data_path) {
                 if ($.args.bert_version == "bert-large-uncased-whole-word-masking") 
                     || ($.args.bert_version == "bert-large-cased-whole-word-masking")
                     || ($.args.bert_version == "google/electra-large-discriminator")
-                    || ($.args.bert_version == "FPTAI/velectra-base-discriminator-cased")
                     || ($.args.bert_version == "vinai/phobert-large")
                 then 1024 else 768,
             loss_type: $.args.loss_type,
