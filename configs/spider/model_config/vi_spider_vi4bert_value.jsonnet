@@ -1,4 +1,4 @@
-local _data_path = 'data/bert4news/';
+local _data_path = 'data/ViBert4News/';
 local spider_base = import "spider_base_0512.libsonnet";
 
 function(args, data_path=_data_path) spider_base(args, data_path=_data_path) {
