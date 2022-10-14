@@ -2,14 +2,14 @@
     local exp_id = 0,
     project: "spider_value",
     logdir: "log/spider/bert_value_%d" %exp_id,
-    model_config: "configs/spider/model_config/vi_spider_viBert_Syllable.jsonnet",
+    model_config: "configs/spider/model_config/vi_spider_vElectra_Syllable.jsonnet",
     model_config_args: {
         # data 
         use_other_train: true,
 
         # model
         num_layers: 6,
-        sc_link: false,
+        sc_link: true,
         cv_link: false,
         loss_type: "softmax", # softmax, label_smooth
 
@@ -17,7 +17,7 @@
         opt: "torchAdamw",   # bertAdamw, torchAdamw
         lr_scheduler: "bert_warmup_polynomial_group_v2", # bert_warmup_polynomial_group,bert_warmup_polynomial_grou_v2
         bert_token_type: false,
-        bert_version: "FPTAI/vibert-base-cased",
+        bert_version: "FPTAI/velectra-base-discriminator-cased",
         bert_lr: 2e-5, 
 
         # grammar
