@@ -5,7 +5,6 @@ __pycache__/
 *.pyc
 
 # temp dir
-data/
 log/
 ie_dir/
 jobs/
