@@ -460,6 +460,7 @@ class Evaluator:
     def evaluate_one(self, db_name, gold, predicted):
         schema = self.schemas[db_name]
         g_sql = get_sql(schema, gold)
+        print(schema + " / " + gold)
         hardness = self.eval_hardness(g_sql)
         self.scores[hardness]['count'] += 1
         self.scores['all']['count'] += 1
