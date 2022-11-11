@@ -103,6 +103,7 @@ class Inferer:
                 zip(sliced_orig_data, sliced_preproc_data), total=len(sliced_orig_data)
             )
         ):
+            print(preproc_item)
             beams = infer_func(
                 model, orig_item, preproc_item, beam_size=beam_size, max_steps=1000
             )
