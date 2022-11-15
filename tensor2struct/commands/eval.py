@@ -37,7 +37,6 @@ def compute_metrics(config_path, config_args, section, inferred_path, etype, log
         inferred_path = inferred_path.replace("__LOGDIR__", logdir)
 
     inferred = open(inferred_path)
-    print(inferred)
     data = registry.construct("dataset", config["data"][section])
     metrics = data.Metrics(data, etype)
 

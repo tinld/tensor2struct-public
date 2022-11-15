@@ -9,7 +9,7 @@
 
         # model
         num_layers: 6,
-        sc_link: true,
+        sc_link: false,
         cv_link: false,
         loss_type: "softmax", # softmax, label_smooth
 
@@ -24,7 +24,7 @@
         include_literals: true,
 
         # training
-        bs: 16,
+        bs: 4,
         att: 0,
         lr: 5e-4,
         clip_grad: 0.3,

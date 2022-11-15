@@ -435,9 +435,9 @@ class SpiderUnparser:
         3) Inferring conditions based on tables 
         """
         # nested query in from clause, recursively use the refinement
+        print(tree)
         if "from" in tree and tree["from"]["table_units"][0]["_type"] == "TableUnitSql":
             for table_unit in tree["from"]["table_units"]:
-                print(table_unit["s"])
                 subquery_tree = table_unit["s"]
                 self.refine_from(subquery_tree)
             return
