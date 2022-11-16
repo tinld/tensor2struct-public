@@ -91,7 +91,8 @@ class SpiderEncoderBertPreproc(abstract_preproc.AbstractPreproc):
         #     return False, None
         if num_words > 512:
             logger.info(f"Found long seq in {item.schema.db_id}")
-            return True, True
+            # return True, True
+            return False, None
         else:
             return True, None
 
