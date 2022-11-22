@@ -14,7 +14,7 @@ from tensor2struct.models import abstract_preproc
 from tensor2struct.utils import serialization, vocab, registry
 from tensor2struct.modules import rat, lstm, embedders, bert_tokenizer
 
-from transformers import BertModel, ElectraModel, AutoModel
+from transformers import BertModel, ElectraModel, AutoModel, BertTokenizer
 
 import logging
 
@@ -251,7 +251,7 @@ class SpiderEncoderBert(torch.nn.Module):
             modelclass = ElectraModel
         elif "phobert" in bert_version:
             modelclass = AutoModel
-        elif "bert" in bert_version:
+        elif "vibert4news" in bert_version:
             modelclass = BertModel
         else:
             raise NotImplementedError
