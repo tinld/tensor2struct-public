@@ -13,7 +13,7 @@ from tensor2struct.models import abstract_preproc
 from tensor2struct.utils import serialization, vocab, registry
 from tensor2struct.modules import rat, lstm, embedders, bert_tokenizer
 
-from transformers import BertModel, ElectraModel, AutoModel, BertTokenizer
+from transformers import BertModel, ElectraModel, AutoModel
 
 import logging
 
@@ -169,7 +169,7 @@ class SpiderEncoderBertPreproc(abstract_preproc.AbstractPreproc):
                     f.write("\n")
 
     def load(self):
-        self.tokenizer = BertTokenizer.from_pretrained(self.data_dir)
+        # self.tokenizer = BertTokenizer.from_pretrained(self.data_dir)
         with open(os.path.join(self.data_dir, "relations.json"), "r") as f:
             relations = json.load(f)
             self.relations = sorted(relations)
@@ -246,7 +246,7 @@ class SpiderEncoderBert(torch.nn.Module):
             modelclass = ElectraModel
         elif "phobert" in bert_version:
             modelclass = AutoModel
-        elif "bert" in bert_version:
+        elif "vibert4news" in bert_version:
             modelclass = BertModel
         else:
             raise NotImplementedError
