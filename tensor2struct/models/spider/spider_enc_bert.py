@@ -50,7 +50,7 @@ class SpiderEncoderBertPreproc(abstract_preproc.AbstractPreproc):
         self,
         save_path,
         context,
-        bert_version="vinai/phobert-large",
+        bert_version="NlpHUST/vibert4news-base-cased",
         compute_sc_link=True,
         compute_cv_link=True,
     ):
@@ -84,8 +84,8 @@ class SpiderEncoderBertPreproc(abstract_preproc.AbstractPreproc):
         )
         if "vibert" in self.tokenizer_config and num_words > 512:
             logger.info(f"Found long seq in {item.schema.db_id}")
-            return False, None
-            # return True, True
+            # return False, None
+            return True, True
         # if "phobert" in self.tokenizer_config and num_words > 256:
         #     logger.info(f"Found long seq in {item.schema.db_id}")
         #     return False, None
