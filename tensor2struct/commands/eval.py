@@ -56,11 +56,9 @@ def compute_metrics(config_path, config_args, section, inferred_path, etype, log
 
         if etype in ["execution", "all"]:
             # if eval by execution, then we choose the first executable one from the beams
-            print(data)
             metrics.add_beams(data[infer_results["index"]], inferred_codes, data[i].orig["question"])
         else:
             assert etype in ["match", "sacreBLEU", "tokenizedBLEU"]
-            print(data)
             metrics.add_one(data[infer_results["index"]], inferred_codes[0])
     return logdir, metrics.finalize()
 
