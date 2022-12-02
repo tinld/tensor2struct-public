@@ -4,7 +4,7 @@ import urllib.request
 import stanza
 from spacy_stanza import StanzaLanguage
 
-from transformers import AutoTokenizer, BertTokenizer
+from transformers import AutoTokenizer, BertTokenizer, AutoModelForMaskedLM
 from tokenizers import BertWordPieceTokenizer, ByteLevelBPETokenizer, Tokenizer
 
 import logging
@@ -40,6 +40,7 @@ class BERTokenizer:
             vocab_path = os.path.join(vocab_dir, "vocab.txt") 
             self.tokenizer = BertWordPieceTokenizer(vocab_path, lowercase=lowercase)
         elif version.startswith("roberta"):
+            self.tokenizer = AutoTokenizer.from_pretrained(version)
             vocab_path = os.path.join(vocab_dir, "vocab.json")
             merge_path = os.path.join(vocab_dir, "merges.txt")
             self.tokenizer = ByteLevelBPETokenizer(vocab_path, merge_path, lowercase=lowercase)
