@@ -40,7 +40,6 @@ class BERTokenizer:
             vocab_path = os.path.join(vocab_dir, "vocab.txt") 
             self.tokenizer = BertWordPieceTokenizer(vocab_path, lowercase=lowercase)
         elif version.startswith("xlm-roberta-large"):
-            self.tokenizer = AutoTokenizer.from_pretrained(version)
             vocab_path = os.path.join(vocab_dir, "vocab.json")
             merge_path = os.path.join(vocab_dir, "merges.txt")
             self.tokenizer = ByteLevelBPETokenizer(vocab_path, merge_path, lowercase=lowercase)
