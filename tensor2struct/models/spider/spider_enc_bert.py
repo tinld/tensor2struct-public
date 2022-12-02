@@ -72,7 +72,7 @@ class SpiderEncoderBertPreproc(abstract_preproc.AbstractPreproc):
     @property
     def tokenizer(self):
         if not hasattr(self, "_tokenizer"):
-            self._tokenizer = bert_tokenizer.AutoTokenizer(self.tokenizer_config)
+            self._tokenizer = bert_tokenizer.BERTokenizer(self.tokenizer_config)
         return self._tokenizer
 
     def validate_item(self, item, section):
@@ -169,7 +169,7 @@ class SpiderEncoderBertPreproc(abstract_preproc.AbstractPreproc):
                     f.write("\n")
 
     def load(self):
-        # self.tokenizer = BertTokenizer.from_pretrained(self.data_dir)
+        self.tokenizer = AutoTokenizer.from_pretrained(self.data_dir)
         with open(os.path.join(self.data_dir, "relations.json"), "r") as f:
             relations = json.load(f)
             self.relations = sorted(relations)
