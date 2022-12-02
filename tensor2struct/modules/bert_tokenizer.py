@@ -36,9 +36,9 @@ class BERTokenizer:
         if "phobert" in version: 
             self.tokenizer = Tokenizer.from_pretrained(version)
             self.auto_tokenizer = AutoTokenizer.from_pretrained(version)
-        elif version.startswith("bert") or "electra" or "vibert4news" in version:
-            vocab_path = os.path.join(vocab_dir, "vocab.txt") 
-            self.tokenizer = BertWordPieceTokenizer(vocab_path, lowercase=lowercase)
+        # elif version.startswith("bert") or "electra" or "vibert4news" in version:
+        #     vocab_path = os.path.join(vocab_dir, "vocab.txt") 
+        #     self.tokenizer = BertWordPieceTokenizer(vocab_path, lowercase=lowercase)
         elif version.startswith("roberta"):
             self.tokenizer = AutoTokenizer.from_pretrained(version)
             vocab_path = os.path.join(vocab_dir, "vocab.json")
