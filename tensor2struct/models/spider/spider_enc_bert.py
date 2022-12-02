@@ -72,7 +72,7 @@ class SpiderEncoderBertPreproc(abstract_preproc.AbstractPreproc):
     @property
     def tokenizer(self):
         if not hasattr(self, "_tokenizer"):
-            self._tokenizer = bert_tokenizer.BertTokenizer(self.tokenizer_config)
+            self._tokenizer = AutoModelForMaskedLM(self.tokenizer_config)
         return self._tokenizer
 
     def validate_item(self, item, section):
