@@ -26,7 +26,7 @@ class BERTokenizer:
         cache = os.path.join(os.environ.get("CACHE_DIR", os.getcwd()), ".vector_cache")
         vocab_dir = os.path.join(cache, f"{version}")
         if not os.path.exists(vocab_dir):
-            pretrained_tokenizer = BertTokenizer.from_pretrained(version)
+            pretrained_tokenizer = AutoTokenizer.from_pretrained(version)
             pretrained_tokenizer.save_pretrained(vocab_dir)
         
         if "uncased" in version or "cased" not in version:
