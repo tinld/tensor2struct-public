@@ -49,7 +49,7 @@ class SpiderEncoderBertPreproc(abstract_preproc.AbstractPreproc):
         self,
         save_path,
         context,
-        bert_version="bert-base-uncased",
+        bert_version="xlm-roberta-large",
         compute_sc_link=True,
         compute_cv_link=True,
     ):
@@ -72,7 +72,7 @@ class SpiderEncoderBertPreproc(abstract_preproc.AbstractPreproc):
     @property
     def tokenizer(self):
         if not hasattr(self, "_tokenizer"):
-            self._tokenizer = AutoModelForMaskedLM.from_config(XLMConfig())
+            self._tokenizer = AutoModelForMaskedLM.from_config(self.tokenizer_config)
         return self._tokenizer
 
     def validate_item(self, item, section):
