@@ -43,7 +43,7 @@ class BERTokenizer:
             self.tokenizer = AutoTokenizer.from_pretrained(version)
             vocab_path = os.path.join(vocab_dir, "vocab.json")
             merge_path = os.path.join(vocab_dir, "merges.txt")
-            self.tokenizer = ByteLevelBPETokenizer(vocab_path, merge_path, lowercase=lowercase)
+            # self.tokenizer = ByteLevelBPETokenizer(vocab_path, merge_path, lowercase=lowercase)
         else:
             raise NotImplementedError
         
