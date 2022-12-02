@@ -4,7 +4,7 @@ import urllib.request
 import stanza
 from spacy_stanza import StanzaLanguage
 
-from transformers import AutoTokenizer, BertTokenizer, AutoModelForMaskedLM
+from transformers import AutoTokenizer, BertTokenizer, AutoModelForMaskedLM, XLMTokenizer
 from tokenizers import BertWordPieceTokenizer, ByteLevelBPETokenizer, Tokenizer
 
 import logging
