@@ -33,13 +33,13 @@ class BERTokenizer:
             lowercase = True # roberta, electra, bert-base-uncased
         else:
             lowercase = False # bert-cased
-        if "phobert" in version: 
+        if "xlm-roberta-large" in version: 
             self.tokenizer = Tokenizer.from_pretrained(version)
             self.auto_tokenizer = AutoTokenizer.from_pretrained(version)
         elif version.startswith("bert") or "electra" or "vibert4news" in version:
             vocab_path = os.path.join(vocab_dir, "vocab.txt") 
             self.tokenizer = BertWordPieceTokenizer(vocab_path, lowercase=lowercase)
-        elif version.startswith("xlm-roberta-large"):
+        elif version.startswith("roberta"):
             vocab_path = os.path.join(vocab_dir, "vocab.json")
             merge_path = os.path.join(vocab_dir, "merges.txt")
             self.tokenizer = ByteLevelBPETokenizer(vocab_path, merge_path, lowercase=lowercase)
