@@ -46,7 +46,7 @@ class BERTokenizer:
         else:
             raise NotImplementedError
         
-        if "phobert" in version:
+        if "phobert" or "xlm-roberta-large" in version:
             self.cls_token = self.auto_tokenizer.cls_token
             self.cls_token_id = self.auto_tokenizer.convert_tokens_to_ids(self.cls_token)
             self.sep_token = self.auto_tokenizer.sep_token
