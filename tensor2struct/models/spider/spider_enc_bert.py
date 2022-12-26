@@ -13,7 +13,7 @@ from tensor2struct.models import abstract_preproc
 from tensor2struct.utils import serialization, vocab, registry
 from tensor2struct.modules import rat, lstm, embedders, bert_tokenizer
 
-from transformers import BertModel, ElectraModel, AutoModel, AutoTokenizer, AutoModelForMaskedLM, XLMConfig, XLMModel
+from transformers import BertModel, ElectraModel, AutoModel, AutoTokenizer, AutoModelForMaskedLM, XLMRobertaXLConfig, XLMRobertaXLModel
 
 import logging
 
@@ -72,8 +72,8 @@ class SpiderEncoderBertPreproc(abstract_preproc.AbstractPreproc):
     @property
     def tokenizer(self):
         if not hasattr(self, "_tokenizer"):
-            configuration = XLMConfig()
-            model = XLMModel(configuration)
+            configuration = XLMRobertaXLConfig()
+            model = XLMRobertaXLModel(configuration)
             self._tokenizer = model.config
         return self._tokenizer
 
@@ -251,7 +251,7 @@ class SpiderEncoderBert(torch.nn.Module):
         elif "vibert4news" in bert_version:
             modelclass = BertModel
         elif "xlm-roberta-large" in bert_version:
-            modelclass = AutoModelForMaskedLM
+            modelclass = AutoModel
         else:
             raise NotImplementedError
         self.bert_model = modelclass.from_pretrained(bert_version)
