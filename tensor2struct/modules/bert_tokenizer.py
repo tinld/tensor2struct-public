@@ -34,7 +34,7 @@ class BERTokenizer:
         else:
             lowercase = False # bert-cased
         if "xlm-roberta-large" in version: 
-            self.tokenizer = AutoTokenizer.from_pretrained(version)
+            self.tokenizer = Tokenizer.from_pretrained(version)
             self.auto_tokenizer = AutoTokenizer.from_pretrained(version)
         elif version.startswith("bert") or "electra" or "vibert4news" in version:
             vocab_path = os.path.join(vocab_dir, "vocab.txt") 
