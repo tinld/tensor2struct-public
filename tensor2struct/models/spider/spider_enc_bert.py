@@ -72,9 +72,7 @@ class SpiderEncoderBertPreproc(abstract_preproc.AbstractPreproc):
     @property
     def tokenizer(self):
         if not hasattr(self, "_tokenizer"):
-            configuration = XLMRobertaConfig()
-            model = XLMRobertaModel(configuration)
-            self._tokenizer = model.config
+            self._tokenizer = bert_tokenizer.BERTokenizer(self.tokenizer_config)
         return self._tokenizer
 
     def validate_item(self, item, section):
