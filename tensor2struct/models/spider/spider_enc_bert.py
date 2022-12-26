@@ -13,7 +13,7 @@ from tensor2struct.models import abstract_preproc
 from tensor2struct.utils import serialization, vocab, registry
 from tensor2struct.modules import rat, lstm, embedders, bert_tokenizer
 
-from transformers import BertModel, ElectraModel, AutoModel, AutoTokenizer, AutoModelForMaskedLM, XLMRobertaXLConfig, XLMRobertaXLModel
+from transformers import BertModel, ElectraModel, AutoModel, AutoTokenizer, AutoModelForMaskedLM, XLMRobertaConfig, XLMRobertaModel
 
 import logging
 
@@ -72,8 +72,8 @@ class SpiderEncoderBertPreproc(abstract_preproc.AbstractPreproc):
     @property
     def tokenizer(self):
         if not hasattr(self, "_tokenizer"):
-            configuration = XLMRobertaXLConfig()
-            model = XLMRobertaXLModel(configuration)
+            configuration = XLMRobertaConfig()
+            model = XLMRobertaModel(configuration)
             self._tokenizer = model.config
         return self._tokenizer
 
