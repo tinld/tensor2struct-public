@@ -14,7 +14,7 @@ class BERTEncoder(torch.nn.Module):
     def __init__(self, device, bert_version):
         super().__init__()
         self._device = device
-        self.bert_model = BertModel.from_pretrained(bert_version)
+        self.bert_model = AutoModel.from_pretrained(bert_version)
         self.tokenizer = bert_tokenizer.BERTokenizer(bert_version)
 
     def forward(self, tokens_list):
@@ -69,6 +69,8 @@ class BERT2Embed(torch.nn.Module):
 
         if "base" in bert_version:
             input_size = 768
+        elif "xlm-robert-large" in bert_version:
+            input_size = 1024
         else:
             input_size = 1024
         self.map = torch.nn.Linear(input_size, emb_size)
