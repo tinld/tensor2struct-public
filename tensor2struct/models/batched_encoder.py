@@ -33,7 +33,7 @@ class Encoder(torch.nn.Module):
         recurrent_size=256,
         num_heads=4,
         use_native_lstm=True,
-        bert_version="FPTAI/velectra-base-discriminator-cased",
+        bert_version="xlm-roberta-large",
         encoder=("emb", "bilstm"),
     ):
         """
