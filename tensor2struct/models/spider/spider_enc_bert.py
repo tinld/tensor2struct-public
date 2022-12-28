@@ -209,7 +209,7 @@ class SpiderEncoderBert(torch.nn.Module):
         self.bert_version = bert_version
         self.bert_token_type = bert_token_type
         self.base_enc_hidden_size = (
-            1024 if "vinai/phobert-large" in bert_version else 768
+            1024 if "vinai/phobert-large" or "xlm-roberta-large" in bert_version else 768
         )
         self.include_in_memory = include_in_memory
 
