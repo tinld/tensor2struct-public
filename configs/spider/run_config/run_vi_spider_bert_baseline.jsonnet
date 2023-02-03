@@ -31,7 +31,7 @@
         num_batch_accumulated: 1,
         max_steps: 20000,
         save_threshold: 19000,
-        use_bert_training: true,
+        use_bert_training: true, //false
         device: "cuda:0",
     },
 
