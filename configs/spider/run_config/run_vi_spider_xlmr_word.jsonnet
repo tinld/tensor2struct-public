@@ -24,11 +24,11 @@
         include_literals: true,
 
         # training
-        bs: 8,
+        bs: 6,
         att: 0,
         lr: 5e-4,
         clip_grad: 0.3,
-        num_batch_accumulated: 1,
+        num_batch_accumulated: 2,
         max_steps: 20000,
         save_threshold: 19000,
         use_bert_training: true,
