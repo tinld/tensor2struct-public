@@ -4,7 +4,7 @@ import urllib.request
 import stanza
 from spacy_stanza import StanzaLanguage
 
-from transformers import AutoTokenizer, BertTokenizer, AutoModelForMaskedLM, XLMTokenizer
+from transformers import AutoTokenizer
 from tokenizers import BertWordPieceTokenizer, ByteLevelBPETokenizer, Tokenizer
 
 import logging
@@ -26,17 +26,17 @@ class BERTokenizer:
         cache = os.path.join(os.environ.get("CACHE_DIR", os.getcwd()), ".vector_cache")
         vocab_dir = os.path.join(cache, f"{version}")
         if not os.path.exists(vocab_dir):
-            pretrained_tokenizer = AutoModelForMaskedLM.from_pretrained(version)
+            pretrained_tokenizer = AutoTokenizer.from_pretrained(version)
             pretrained_tokenizer.save_pretrained(vocab_dir)
         
         if "uncased" in version or "cased" not in version:
             lowercase = True # roberta, electra, bert-base-uncased
         else:
             lowercase = False # bert-cased
-        if "xlm-roberta-large" in version: 
-            self.tokenizer = AutoModelForMaskedLM.from_pretrained(version)
-            self.auto_tokenizer = AutoModelForMaskedLM.from_pretrained(version)
-        elif version.startswith("bert") or "electra" or "vibert4news" in version:
+        if "phobert" in version: 
+            self.tokenizer = Tokenizer.from_pretrained(version)
+            self.auto_tokenizer = AutoTokenizer.from_pretrained(version)
+        elif version.startswith("bert") or "electra" in version:
             vocab_path = os.path.join(vocab_dir, "vocab.txt") 
             self.tokenizer = BertWordPieceTokenizer(vocab_path, lowercase=lowercase)
         elif version.startswith("roberta"):
