@@ -13,7 +13,7 @@ from tensor2struct.models import abstract_preproc
 from tensor2struct.utils import serialization, vocab, registry
 from tensor2struct.modules import rat, lstm, embedders, bert_tokenizer
 
-from transformers import BertModel, ElectraModel, AutoModel, AutoTokenizer, AutoModelForMaskedLM, XLMConfig
+from transformers import BertModel, ElectraModel, AutoModel
 
 import logging
 
@@ -49,7 +49,7 @@ class SpiderEncoderBertPreproc(abstract_preproc.AbstractPreproc):
         self,
         save_path,
         context,
-        bert_version="xlm-roberta-large",
+        bert_version="bert-base-uncased",
         compute_sc_link=True,
         compute_cv_link=True,
     ):
@@ -72,7 +72,7 @@ class SpiderEncoderBertPreproc(abstract_preproc.AbstractPreproc):
     @property
     def tokenizer(self):
         if not hasattr(self, "_tokenizer"):
-            self._tokenizer = XLMConfig.from_config(self.tokenizer_config)
+            self._tokenizer = bert_tokenizer.BERTokenizer(self.tokenizer_config)
         return self._tokenizer
 
     def validate_item(self, item, section):
@@ -84,7 +84,7 @@ class SpiderEncoderBertPreproc(abstract_preproc.AbstractPreproc):
         if "phobert" in self.tokenizer_config and num_words > 256:
             logger.info(f"Found long seq in {item.schema.db_id}")
             # return False, None
-            return False, None
+            return True, True
         if num_words > 512:
             logger.info(f"Found long seq in {item.schema.db_id}")
             return False, None
@@ -209,7 +209,7 @@ class SpiderEncoderBert(torch.nn.Module):
         self.bert_version = bert_version
         self.bert_token_type = bert_token_type
         self.base_enc_hidden_size = (
-            1024 if "vinai/phobert-large" in bert_version else 768
+            1024 if "large" in bert_version else 768
         )
         self.include_in_memory = include_in_memory
 
@@ -246,10 +246,8 @@ class SpiderEncoderBert(torch.nn.Module):
             modelclass = ElectraModel
         elif "phobert" in bert_version:
             modelclass = AutoModel
-        elif "vibert4news" in bert_version:
+        elif "bert" in bert_version:
             modelclass = BertModel
-        elif "xlm-roberta-large" in bert_version:
-            modelclass = AutoModelForMaskedLM
         else:
             raise NotImplementedError
         self.bert_model = modelclass.from_pretrained(bert_version)
