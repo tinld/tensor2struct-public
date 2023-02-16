@@ -83,6 +83,6 @@ function(args, data_path=_data_path) spider_base(args, data_path=_data_path) {
         name: $.args.lr_scheduler,
         start_lrs: [$.args.lr, $.args.bert_lr],
         end_lr: $.args.end_lr,
-        num_warmup_steps: $.train.max_steps / 8,
+        num_warmup_steps: 500,
     },
 }
