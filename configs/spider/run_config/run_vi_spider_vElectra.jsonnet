@@ -35,7 +35,7 @@
         device: "cuda:0",
     },
 
-    eval_section: "test",
+    eval_section: "val",
     eval_type: "all", # match, exec, all
     eval_method: "spider_beam_search_with_heuristic",
     eval_output: "ie_dir/spider_value",
