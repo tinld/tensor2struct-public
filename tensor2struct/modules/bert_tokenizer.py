@@ -33,10 +33,10 @@ class BERTokenizer:
             lowercase = True # roberta, electra, bert-base-uncased
         else:
             lowercase = False # bert-cased
-        if "phobert" in version: 
+        if "phobert" or "vibert4news-base-cased" in version: 
             self.tokenizer = Tokenizer.from_pretrained(version)
             self.auto_tokenizer = AutoTokenizer.from_pretrained(version)
-        elif version.startswith("bert") or "electra" or "vibert4news-base-cased" in version:
+        elif version.startswith("bert") or "electra" in version:
             vocab_path = os.path.join(vocab_dir, "vocab.txt") 
             self.tokenizer = BertWordPieceTokenizer(vocab_path, lowercase=lowercase)
         elif version.startswith("roberta"):
