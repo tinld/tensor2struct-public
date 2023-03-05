@@ -34,7 +34,7 @@ class BERTokenizer:
         else:
             lowercase = False # bert-cased
             
-        if "phobert" or "vibert4news-base-cased" in version: 
+        if "phobert" or "FPTAI/vibert-base-cased" in version: 
             self.tokenizer = Tokenizer.from_pretrained(version)
             self.auto_tokenizer = AutoTokenizer.from_pretrained(version)
         elif version.startswith("bert") or "electra" in version:
