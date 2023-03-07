@@ -244,9 +244,9 @@ class SpiderEncoderBert(torch.nn.Module):
 
         if "electra" in bert_version:
             modelclass = ElectraModel
-        elif "phobert" or "vibert4news-base-cased" in bert_version:
+        elif "phobert" in bert_version:
             modelclass = AutoModel
-        elif "bert" in bert_version:
+        elif "bert" or "vibert4news-base-cased" in bert_version:
             modelclass = BertModel
         else:
             raise NotImplementedError
