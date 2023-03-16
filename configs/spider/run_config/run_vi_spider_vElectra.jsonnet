@@ -18,7 +18,7 @@
         lr_scheduler: "bert_warmup_polynomial_group_v2", # bert_warmup_polynomial_group,bert_warmup_polynomial_grou_v2
         bert_token_type: false,
         bert_version: "FPTAI/velectra-base-discriminator-cased",
-        bert_lr: 2e-5, 
+        bert_lr: 1e-5, 
 
         # grammar
         include_literals: true,
@@ -26,7 +26,7 @@
         # training
         bs: 4,
         att: 0,
-        lr: 5e-4,
+        lr: 6e-5,
         clip_grad: 0.3,
         num_batch_accumulated: 3,
         max_steps: 20000,
@@ -35,7 +35,7 @@
         device: "cuda:0",
     },
 
-    eval_section: "test",
+    eval_section: "val",
     eval_type: "all", # match, exec, all
     eval_method: "spider_beam_search_with_heuristic",
     eval_output: "ie_dir/spider_value",
