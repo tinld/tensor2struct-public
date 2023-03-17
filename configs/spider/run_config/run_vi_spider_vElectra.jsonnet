@@ -24,18 +24,18 @@
         include_literals: true,
 
         # training
-        bs: 16,
+        bs: 4,
         att: 0,
-        lr: 5e-4,
+        lr: 6e-5,
         clip_grad: 0.3,
-        num_batch_accumulated: 1,
+        num_batch_accumulated: 3,
         max_steps: 20000,
         save_threshold: 19000,
         use_bert_training: true,
         device: "cuda:0",
     },
 
-    eval_section: "val",
+    eval_section: "test",
     eval_type: "all", # match, exec, all
     eval_method: "spider_beam_search_with_heuristic",
     eval_output: "ie_dir/spider_value",
