@@ -1,3 +1,4 @@
+from base64 import decode
 import collections
 import itertools
 import json
@@ -49,7 +50,7 @@ class SpiderEncoderBertPreproc(abstract_preproc.AbstractPreproc):
         self,
         save_path,
         context,
-        bert_version="bert-base-uncased",
+        bert_version="FPTAI/velectra-base-discriminator-cased",
         compute_sc_link=True,
         compute_cv_link=True,
     ):
@@ -81,13 +82,16 @@ class SpiderEncoderBertPreproc(abstract_preproc.AbstractPreproc):
             + sum(len(c.name) for c in item.schema.columns)
             + sum(len(t.name) for t in item.schema.tables)
         )
-        if "phobert" in self.tokenizer_config and num_words > 256:
+        if "electra" in self.tokenizer_config and num_words > 512:
             logger.info(f"Found long seq in {item.schema.db_id}")
-            # return False, None
             return True, True
+            # return True, True
+        # if "phobert" in self.tokenizer_config and num_words > 256:
+        #     logger.info(f"Found long seq in {item.schema.db_id}")
+        #     return False, None
         if num_words > 512:
             logger.info(f"Found long seq in {item.schema.db_id}")
-            return True, True
+            return False, None
         else:
             return True, None
 
@@ -167,7 +171,7 @@ class SpiderEncoderBertPreproc(abstract_preproc.AbstractPreproc):
                 for text in texts:
                     f.write(json.dumps(text, ensure_ascii=False))
                     f.write("\n")
-
+                    
     def load(self):
         # self.tokenizer = BertTokenizer.from_pretrained(self.data_dir)
         with open(os.path.join(self.data_dir, "relations.json"), "r") as f:
@@ -246,7 +250,7 @@ class SpiderEncoderBert(torch.nn.Module):
             modelclass = ElectraModel
         elif "phobert" in bert_version:
             modelclass = AutoModel
-        elif "bert" or "vibert4news-base-cased" in bert_version:
+        elif "bert" in bert_version:
             modelclass = BertModel
         else:
             raise NotImplementedError
@@ -278,11 +282,11 @@ class SpiderEncoderBert(torch.nn.Module):
                 qs + [c for col in cols for c in col] + [t for tab in tabs for t in tab]
             )
             assert self.tokenizer.check_bert_input_seq(token_list)
-            if "phobert" in self.bert_version and len(token_list) > 256:
-                long_seq_set.add(batch_idx)
-                continue
+            # if "electra" in self.bert_version and len(token_list) > 512:
+            #     long_seq_set.add(batch_idx)
+            #     continue
 
-            elif len(token_list) > 512:
+            if len(token_list) > 512:
                 long_seq_set.add(batch_idx)
                 continue
 
